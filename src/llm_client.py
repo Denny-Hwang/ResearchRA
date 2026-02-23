@@ -37,11 +37,11 @@ def _call_anthropic(api_key: str, model: str, system_prompt: str, user_prompt: s
 PROVIDERS = {
     "OpenAI": {
         "call": _call_openai,
-        "models": ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-3.5-turbo"],
+        "models": ["gpt-5.2", "gpt-4o", "gpt-4o-mini", "o3", "o4-mini", "gpt-4.1", "gpt-4.1-mini"],
     },
     "Anthropic": {
         "call": _call_anthropic,
-        "models": ["claude-sonnet-4-20250514", "claude-haiku-4-20250414", "claude-opus-4-20250514"],
+        "models": ["claude-sonnet-4-6", "claude-opus-4-6", "claude-haiku-4-5-20251001"],
     },
 }
 
