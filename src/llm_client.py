@@ -37,7 +37,7 @@ def _call_anthropic(api_key: str, model: str, system_prompt: str, user_prompt: s
 PROVIDERS = {
     "OpenAI": {
         "call": _call_openai,
-        "models": ["gpt-4o", "gpt-4o-mini", "o3", "o4-mini", "gpt-4.1", "gpt-4.1-mini"],
+        "models": ["gpt-5.2", "gpt-4o", "gpt-4o-mini", "o3", "o4-mini", "gpt-4.1", "gpt-4.1-mini"],
     },
     "Anthropic": {
         "call": _call_anthropic,
