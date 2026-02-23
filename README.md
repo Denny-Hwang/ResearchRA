@@ -1,61 +1,60 @@
 # Review Paper Agent
 
-Streamlit 기반 리뷰 논문 작성 도우미 앱입니다.
-특정 주제에 대해 **하이레벨 개요 → 상세 구조 → 초안 → 최종 완성**까지 단계별로 진행하며, 각 단계에서 사용자 검토를 거칩니다.
+A Streamlit-based review paper writing assistant that guides you through a structured workflow — from **high-level overview → detailed structure → draft → final paper** — with user review at each stage.
 
-## 주요 기능
+## Features
 
-- **5단계 워크플로우**: 주제 설정 → 개요 → 구조 설계 → 초안 작성 → 최종 완성
-- **3가지 작성 모드**: 사용자 수준에 맞게 질문 깊이와 자동화 수준 조절
-- **LLM API 연동 (선택)**: OpenAI / Anthropic API를 입력하면 AI 보조 활성화
-- **수동 모드 지원**: API 없이도 모든 내용을 직접 작성 가능
-- **대화형 도우미**: 논문 작성 중 질문할 수 있는 채팅 기능
-- **내보내기**: Markdown (.md), Word (.docx) 다운로드
+- **5-Stage Workflow**: Topic → Overview → Structure → Draft → Finalize
+- **3 Writing Modes**: Adjustable question depth and automation level based on user experience
+- **LLM Integration (Optional)**: Enable AI assistance with an OpenAI or Anthropic API key
+- **Manual Mode**: Write everything yourself without an API key
+- **Interactive Chat**: Ask questions during the writing process
+- **Export**: Download as Markdown (`.md`) or Word (`.docx`)
 
-## 작성 모드
+## Writing Modes
 
-| 모드 | 설명 | 대상 |
+| Mode | Description | Best For |
 |---|---|---|
-| **Quick Start** | 주제만 입력하면 AI가 나머지를 자동 완성. MVP 프로토타이핑 방식 | 빠르게 초안이 필요한 경우 |
-| **Standard** | 주요 의사결정은 사용자가, 세부 작성은 AI가 보조 | 일반적인 리뷰 논문 작성 |
-| **Expert** | 매 단계마다 심층 워크숍 질문으로 고품질 학술 논문 설계 | 학술지 투고 수준의 논문 |
+| **Quick Start** | Enter a topic and the AI auto-generates the rest | Rapid prototyping / first drafts |
+| **Standard** | User makes key decisions; AI handles detailed writing | General review paper writing |
+| **Expert** | In-depth workshop-style questions at every stage | Publication-quality academic papers |
 
-## 프로젝트 구조
+## Project Structure
 
 ```
 ResearchRA/
-├── app.py                         # Streamlit 메인 앱
-├── requirements.txt               # Python 의존성
-├── .streamlit/config.toml         # Streamlit 테마 설정
+├── app.py                         # Streamlit main app
+├── requirements.txt               # Python dependencies
+├── .streamlit/config.toml         # Streamlit theme config
 ├── src/
-│   ├── llm_client.py              # OpenAI / Anthropic API 클라이언트
-│   ├── paper_state.py             # 논문 상태 및 모드 관리
-│   └── prompts.py                 # 모드별 LLM 프롬프트 템플릿
+│   ├── llm_client.py              # OpenAI / Anthropic API client
+│   ├── paper_state.py             # Paper state & mode management
+│   └── prompts.py                 # Mode-specific LLM prompt templates
 └── components/
-    ├── sidebar.py                 # 사이드바 (모드 선택, 진행 단계, LLM 설정)
-    ├── export.py                  # Markdown / Word 내보내기
-    ├── stage_topic.py             # 1단계: 주제 설정
-    ├── stage_overview.py          # 2단계: 하이레벨 개요
-    ├── stage_structure.py         # 3단계: 상세 구조 설계
-    ├── stage_draft.py             # 4단계: 초안 작성
-    └── stage_finalize.py          # 5단계: 최종 완성
+    ├── sidebar.py                 # Sidebar (mode selection, progress, LLM settings)
+    ├── export.py                  # Markdown / Word export
+    ├── stage_topic.py             # Stage 1: Topic setup
+    ├── stage_overview.py          # Stage 2: High-level overview
+    ├── stage_structure.py         # Stage 3: Detailed structure design
+    ├── stage_draft.py             # Stage 4: Draft writing
+    └── stage_finalize.py          # Stage 5: Finalization
 ```
 
-## 실행 방법
+## Getting Started
 
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## LLM API 설정
+## LLM API Setup
 
-앱 실행 후 왼쪽 사이드바의 **LLM API 설정**에서:
+After launching the app, open **LLM API Settings** in the left sidebar:
 
-1. AI 제공자 선택 (OpenAI 또는 Anthropic)
-2. 모델 선택
-3. API Key 입력
-4. Temperature 조절
-5. **설정 저장** 클릭
+1. Select a provider (OpenAI or Anthropic)
+2. Choose a model
+3. Enter your API key
+4. Adjust temperature
+5. Click **Save Settings**
 
-API Key가 없어도 모든 내용을 수동으로 작성할 수 있습니다.
+The app is fully functional without an API key — all content can be written manually.
