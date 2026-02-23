@@ -12,8 +12,8 @@ st.set_page_config(
 )
 
 from src.paper_state import get_paper_state
-from pages.sidebar import render_sidebar
-from pages import stage_topic, stage_overview, stage_structure, stage_draft, stage_finalize
+from components.sidebar import render_sidebar
+from components import stage_topic, stage_overview, stage_structure, stage_draft, stage_finalize
 
 # 사이드바
 render_sidebar()
@@ -38,10 +38,9 @@ with st.expander("대화형 도우미", expanded=False):
     st.markdown("논문 작성 과정에서 궁금한 점을 질문하세요.")
 
     from src.llm_client import call_llm, is_llm_configured
-    from src.prompts import CHAT_PROMPT, SYSTEM_PROMPT
-    from src.paper_state import add_chat, STAGE_LABELS
+    from src.prompts import CHAT_PROMPT, SYSTEM_PROMPTS
+    from src.paper_state import add_chat, STAGE_LABELS, get_mode
 
-    # 채팅 이력 표시
     for msg in ps.chat_history[-10:]:
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
@@ -61,7 +60,7 @@ with st.expander("대화형 도우미", expanded=False):
                     context=context,
                     question=user_input,
                 )
-                answer = call_llm(SYSTEM_PROMPT, prompt)
+                answer = call_llm(SYSTEM_PROMPTS[get_mode()], prompt)
                 if answer:
                     add_chat("assistant", answer)
                     with st.chat_message("assistant"):

@@ -9,6 +9,7 @@ from typing import Literal
 import streamlit as st
 
 Stage = Literal["topic", "overview", "structure", "draft", "finalize"]
+Mode = Literal["quick", "standard", "expert"]
 
 STAGES: list[Stage] = ["topic", "overview", "structure", "draft", "finalize"]
 
@@ -18,6 +19,24 @@ STAGE_LABELS: dict[Stage, str] = {
     "structure": "3. 상세 구조 설계",
     "draft": "4. 초안 작성",
     "finalize": "5. 최종 완성",
+}
+
+MODE_INFO: dict[Mode, dict] = {
+    "quick": {
+        "label": "Quick Start",
+        "icon": "🚀",
+        "description": "핵심만 빠르게 — 주제와 기본 방향만 정하면 AI가 나머지를 채워줍니다.",
+    },
+    "standard": {
+        "label": "Standard",
+        "icon": "📝",
+        "description": "균형 잡힌 진행 — 주요 의사결정은 사용자가, 세부 작성은 AI가 도와줍니다.",
+    },
+    "expert": {
+        "label": "Expert",
+        "icon": "🔬",
+        "description": "심층 워크숍 — 각 단계마다 상세 질문으로 고품질 학술 논문을 설계합니다.",
+    },
 }
 
 
@@ -31,17 +50,31 @@ class Section:
 
 @dataclass
 class PaperState:
+    # 모드
+    mode: Mode = "standard"
+
     # Stage 1 - 주제
     topic: str = ""
     research_question: str = ""
     scope: str = ""
     keywords: str = ""
 
+    # Stage 1 - Expert 추가 필드
+    motivation: str = ""
+    exclusion_criteria: str = ""
+    time_range: str = ""
+    databases: str = ""
+
     # Stage 2 - 개요
     paper_type: str = "Narrative Review"
     overview: str = ""
     target_audience: str = ""
     contribution: str = ""
+
+    # Stage 2 - Expert 추가 필드
+    theoretical_framework: str = ""
+    gap_analysis: str = ""
+    methodology_notes: str = ""
 
     # Stage 3 - 구조
     sections: list[Section] = field(default_factory=list)
@@ -71,6 +104,10 @@ def get_paper_state() -> PaperState:
     if "paper_state" not in st.session_state:
         st.session_state.paper_state = PaperState()
     return st.session_state.paper_state
+
+
+def get_mode() -> Mode:
+    return get_paper_state().mode
 
 
 def set_stage(stage: Stage) -> None:
