@@ -1,4 +1,4 @@
-"""사이드바 UI - LLM 설정, 진행 상태, 내보내기."""
+"""사이드바 UI - 모드 선택, LLM 설정, 진행 상태, 내보내기."""
 
 from __future__ import annotations
 
@@ -8,16 +8,21 @@ from src.llm_client import PROVIDERS, is_llm_configured
 from src.paper_state import (
     STAGES,
     STAGE_LABELS,
+    MODE_INFO,
     get_paper_state,
     set_stage,
 )
-from pages.export import render_export_buttons
+from components.export import render_export_buttons
 
 
 def render_sidebar() -> None:
     with st.sidebar:
         st.title("Review Paper Agent")
         st.caption("리뷰 논문 작성 도우미")
+
+        # ── 작성 모드 ──
+        st.divider()
+        _render_mode_selector()
 
         # ── 진행 단계 ──
         st.divider()
@@ -35,7 +40,7 @@ def render_sidebar() -> None:
             label = STAGE_LABELS[stage]
 
             if i <= current_idx:
-                if st.sidebar.button(f"{icon} {label}", key=f"nav_{stage}", use_container_width=True):
+                if st.button(f"{icon} {label}", key=f"nav_{stage}", use_container_width=True):
                     set_stage(stage)
                     st.rerun()
             else:
@@ -56,6 +61,31 @@ def render_sidebar() -> None:
             for key in list(st.session_state.keys()):
                 del st.session_state[key]
             st.rerun()
+
+
+def _render_mode_selector() -> None:
+    ps = get_paper_state()
+
+    st.subheader("작성 모드")
+
+    modes = list(MODE_INFO.keys())
+    labels = [f"{MODE_INFO[m]['icon']} {MODE_INFO[m]['label']}" for m in modes]
+    current_idx = modes.index(ps.mode)
+
+    selected = st.radio(
+        "작성 모드 선택",
+        modes,
+        index=current_idx,
+        format_func=lambda m: f"{MODE_INFO[m]['icon']} {MODE_INFO[m]['label']}",
+        key="mode_selector",
+        label_visibility="collapsed",
+    )
+
+    if selected != ps.mode:
+        ps.mode = selected
+        st.rerun()
+
+    st.caption(MODE_INFO[ps.mode]["description"])
 
 
 def _render_llm_config() -> None:
